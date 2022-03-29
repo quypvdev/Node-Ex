@@ -124,48 +124,48 @@ exports.updaterole = (req, res) => {
         });
     });
 };
-exports.addOrderToUserHistory = (req, res, next) => {
-    let history = [];
+// exports.addOrderToUserHistory = (req, res, next) => {
+//     let history = [];
 
-    req.body.order.products.forEach(item => {
-        history.push({
-            _id: item._id,
-            name: item.name,
-            description: item.description,
-            category: item.category,
-            quantity: item.count,
-            transaction_id: req.body.order.transaction_id,
-            amount: req.body.order.amount,
-            status: req.body.order.status
-        });
-    });
+//     req.body.order.products.forEach(item => {
+//         history.push({
+//             _id: item._id,
+//             name: item.name,
+//             description: item.description,
+//             category: item.category,
+//             quantity: item.count,
+//             transaction_id: req.body.order.transaction_id,
+//             amount: req.body.order.amount,
+//             status: req.body.order.status
+//         });
+//     });
 
-    User.findOneAndUpdate({ _id: req.profile._id }, { $push: { history: history } }, { new: true }, (error, data) => {
-        if (error) {
-            return res.status(400).json({
-                error: 'Could not update user purchase history'
-            });
-        }
-        next();
-    });
-};
+//     User.findOneAndUpdate({ _id: req.profile._id }, { $push: { history: history } }, { new: true }, (error, data) => {
+//         if (error) {
+//             return res.status(400).json({
+//                 error: 'Could not update user purchase history'
+//             });
+//         }
+//         next();
+//     });
+// };
 
-exports.purchaseHistory = (req, res) => {
-    Order.find({ user: req.profile._id })
-        .populate('user', '_id name')
-        .sort('-created')
-        .exec((err, orders) => {
-            if (err) {
-                return res.status(400).json({
-                    error: errorHandler(err)
-                });
-            }
-            res.json(orders);
-        });
-};
-exports.getStatusValues = (req, res) => {
-    res.json(Order.schema.path('status').enumValues);
-};
+// exports.purchaseHistory = (req, res) => {
+//     Order.find({ user: req.profile._id })
+//         .populate('user', '_id name')
+//         .sort('-created')
+//         .exec((err, orders) => {
+//             if (err) {
+//                 return res.status(400).json({
+//                     error: errorHandler(err)
+//                 });
+//             }
+//             res.json(orders);
+//         });
+// };
+// exports.getStatusValues = (req, res) => {
+//     res.json(Order.schema.path('status').enumValues);
+// };
 // exports.listUsers = (req, res) => {
 //     User.find()
 //         .populate('user', '_id name')
@@ -189,16 +189,16 @@ exports.listUsers = (req, res) => {
         res.json(data);
     });
 };
-exports.remove = (req, res, next) => {
-    // console.log('req.params._id', req.body._id)
-    User.findByIdAndRemove(req.params.userId, (error, data) => {
-        if (error) {
-          return next(error);
-        } else {
-            console.log('remove', data)
-          res.status(200).json({
-            msg: data,
-          });
-        }
-      });
-    };
+// exports.remove = (req, res, next) => {
+//     // console.log('req.params._id', req.body._id)
+//     User.findByIdAndRemove(req.params.userId, (error, data) => {
+//         if (error) {
+//           return next(error);
+//         } else {
+//             console.log('remove', data)
+//           res.status(200).json({
+//             msg: data,
+//           });
+//         }
+//       });
+//     };
