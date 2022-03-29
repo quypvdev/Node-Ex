@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const expressValidator = require('express-validator');
+const session = require('express-session');
 require('dotenv').config();
 // import routes
 const authRoutes = require('./src/routes/auth');
@@ -18,6 +19,13 @@ const userRoutes = require('./src/routes/user');
 // app
 const app = express();
 
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}))
 // db
 mongoose
 .connect(`mongodb+srv://vanquy1306:quypv1306@crudapp.s69oc.mongodb.net/Rentbook?retryWrites=true&w=majority

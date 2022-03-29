@@ -166,16 +166,39 @@ exports.purchaseHistory = (req, res) => {
 exports.getStatusValues = (req, res) => {
     res.json(Order.schema.path('status').enumValues);
 };
+// exports.listUsers = (req, res) => {
+//     User.find()
+//         .populate('user', '_id name')
+//         .sort('-created')
+//         .exec((err, users) => {
+//             if (err) {
+//                 return res.status(400).json({
+//                     error: errorHandler(error)
+//                 });
+//             }
+//             res.json(users);
+//         });
+// };
 exports.listUsers = (req, res) => {
-    User.find()
-        .populate('user', '_id name')
-        .sort('-created')
-        .exec((err, users) => {
-            if (err) {
-                return res.status(400).json({
-                    error: errorHandler(error)
-                });
-            }
-            res.json(users);
-        });
+    User.find().exec((err, data) => {
+        if (err) {
+            return res.status(400).json({
+                error: errorHandler(err)
+            });
+        }
+        res.json(data);
+    });
 };
+exports.remove = (req, res, next) => {
+    // console.log('req.params._id', req.body._id)
+    User.findByIdAndRemove(req.params.userId, (error, data) => {
+        if (error) {
+          return next(error);
+        } else {
+            console.log('remove', data)
+          res.status(200).json({
+            msg: data,
+          });
+        }
+      });
+    };
