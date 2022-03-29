@@ -12,7 +12,7 @@ router.get('/secret/:userId', requireSignin, isAuth, isAdmin, (req, res) => {
 });
 
 router.get('/user/:userId', requireSignin, isAuth, read);
-// router.get("/admin/user/listuser", requireSignin, isAdmin, listUsers);
+router.get("/admin/user/listuser", requireSignin, isAdmin, listUsers);
 // router.delete('/admin/user/:userId', requireSignin, isAdmin, remove);
 
 // router.put('/user/:userId', requireSignin,isAuth, update);
