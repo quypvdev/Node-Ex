@@ -15,8 +15,8 @@ router.get('/user/:userId', requireSignin, isAuth, read);
 router.get("/admin/user/listuser", requireSignin, isAdmin, listUsers);
 // router.delete('/admin/user/:userId', requireSignin, isAdmin, remove);
 
-// router.put('/user/:userId', requireSignin,isAuth, update);
-// router.put('/admin/user/:userId', requireSignin, isAdmin, updaterole);
+router.put('/user/:userId', requireSignin,isAuth, update);
+router.put('/admin/user/:userId', requireSignin, isAdmin, updaterole);
 // router.get('/orders/by/user/:userId', requireSignin, isAuth, purchaseHistory);
 // router.get(
 //     "/order/status-values/:userId",
