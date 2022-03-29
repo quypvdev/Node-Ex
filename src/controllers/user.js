@@ -189,16 +189,16 @@ exports.listUsers = (req, res) => {
         res.json(data);
     });
 };
-// exports.remove = (req, res, next) => {
-//     // console.log('req.params._id', req.body._id)
-//     User.findByIdAndRemove(req.params.userId, (error, data) => {
-//         if (error) {
-//           return next(error);
-//         } else {
-//             console.log('remove', data)
-//           res.status(200).json({
-//             msg: data,
-//           });
-//         }
-//       });
-//     };
+exports.remove = (req, res, next) => {
+    // console.log('req.params._id', req.body._id)
+    User.findByIdAndRemove(req.params.userId, (error, data) => {
+        if (error) {
+          return next(error);
+        } else {
+            console.log('remove', data)
+          res.status(200).json({
+            msg: data,
+          });
+        }
+      });
+    };
