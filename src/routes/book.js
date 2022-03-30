@@ -4,7 +4,7 @@ const {get_books, create_book,update_book,delete_book } = require('../controller
 // const { requireSignin, isAuth, isAdmin} = require('../controllers/auth');
 
 // Get all books
-// router.get('/admin/listbook', get_books);
+router.get('/listbook', get_books);
 
 // router.get('/extended', controller.get_books_extended);
 

@@ -2,15 +2,15 @@ const Book = require('../models/Book');
 // const History = require('../models/History');
 
 // Get all books
-// exports.get_books = async (req, res) => {
-//     await Book.find()
-//         .then(books => {
-//             res.status(200).json({success: true, count: books.length, books});
-//         })
-//         .catch(err => {
-//             res.status(500).json({success: false, message: err.message});
-//         });
-// };
+exports.get_books = async (req, res) => {
+    await Book.find()
+        .then(books => {
+            res.status(200).json({success: true, count: books.length, books});
+        })
+        .catch(err => {
+            res.status(500).json({success: false, message: err.message});
+        });
+};
 
 // exports.get_books_extended = async (req, res) => {
 //     try {
