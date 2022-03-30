@@ -7,6 +7,8 @@ const cors = require('cors');
 const expressValidator = require('express-validator');
 const session = require('express-session');
 require('dotenv').config();
+const crypto = require('crypto')
+const uuidv1 = require('uuidv1')
 // import routes
 const authRoutes = require('./src/routes/auth');
 const userRoutes = require('./src/routes/user');
@@ -14,7 +16,7 @@ const userRoutes = require('./src/routes/user');
 const bookRoutes = require('./src/routes/book');
 // const braintreeRoutes = require('./routes/braintree');
 // const orderRoutes = require('./routes/order');
-
+// const Schema = mongoose.Schema;
 
 // app
 const app = express();
@@ -45,6 +47,90 @@ mongoose
     console.log(`db error ${err.message}`);
     process.exit(-1)
 });
+// Creating Structure of the collection
+const userSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        trim: true,
+        required: true,
+        maxlength: 32
+    },
+    email: {
+        type: String,
+        trim: true,
+        required: true,
+        unique: true
+    },
+    hashed_password: {
+        type: String,
+        required: true
+    },
+    about: {
+        type: String,
+        trim: true
+    },
+    salt: String,
+    role: {
+        type: Number,
+        default: 0
+    },
+    history: {
+        type: Array,
+        default: []
+    },
+    phonenumber:{
+      type: Number
+
+    }
+},
+{ timestamps: true }
+);
+  //virtual field
+  userSchema.virtual('password')
+.set(function(password) {
+    this._password = password;
+    this.salt = uuidv1();
+    this.hashed_password = this.encryptPassword(password);
+})
+.get(function() {
+    return this._password;
+});
+
+userSchema.methods = {
+authenticate: function(plainText){
+return this.encryptPassword(plainText) === this.hashed_password;
+
+},
+
+    encryptPassword: function(password) {
+        if (!password) return "";
+        try {
+            return crypto
+                .createHmac("sha1", this.salt)
+                .update(password)
+                .digest("hex");
+        } catch (err) {
+            return "";
+        }
+    } 
+};
+// Creating collection
+const collections = mongoose.model("user", userSchema);
+collections
+  .create({
+    // Inserting value of only one key
+    name: process.env.Set_name,
+    email: process.env.Set_email, 
+    password: process.env.Set_password,
+    role: process.env.Set_role
+    
+  })
+  .then((ans) => {
+    console.log(ans);
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
 // middlewares
 app.use(morgan('dev'));
 app.use(bodyParser.json());

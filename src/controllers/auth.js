@@ -47,7 +47,7 @@ if(!user.authenticate(password)) {
     delete newUser.hashed_password;
     req.session.user = newUser;
 
-console.log('cc',req.session.user);
+// console.log('cc',req.session.user);
 //generate a signed token with user id and secret
 const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET)
 // persist the token as 't' in coolie with expiry date
@@ -70,7 +70,13 @@ exports.requireSignin = expressJwt({
     secret: process.env.JWT_SECRET,
     algorithms: ['HS256'],
     userProperty: "auth"
-});
+}),
+function(req, res) {
+  if (!req.isAuth) return res.sendStatus(401).json({
+    error: "Token invalid"
+  });
+  res.sendStatus(200);
+};;
 exports.isAuth = (req, res, next) => {
     let user = req.profile && req.auth && req.profile._id == req.auth._id
     if(!user) {
