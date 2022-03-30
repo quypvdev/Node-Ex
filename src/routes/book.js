@@ -18,7 +18,7 @@ router.get('/listbook', get_books);
 router.post('/admin/newbook', create_book);
 
 // Update book
-// router.put('/admin/book/:id', update_book);
+router.put('/admin/book/:id', update_book);
 
 // Delete book
 // router.delete('/admin/book/delete/:id', delete_book);
