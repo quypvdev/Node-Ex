@@ -94,12 +94,12 @@ exports.update_book = async (req, res) => {
 };
 
 // // Delete book
-// exports.delete_book = async (req, res) => {
-//     await Book.findByIdAndDelete(req.params.id)
-//         .then(book => {
-//             res.status(200).json({success: true, message: "Book has been deleted"});
-//         })
-//         .catch(err => {
-//             res.status(500).json({success: false, message: err.message});
-//         });
-// };
+exports.delete_book = async (req, res) => {
+    await Book.findByIdAndDelete(req.params.id)
+        .then(book => {
+            res.status(200).json({success: true, message: "Book has been deleted"});
+        })
+        .catch(err => {
+            res.status(500).json({success: false, message: err.message});
+        });
+};
