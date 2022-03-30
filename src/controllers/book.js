@@ -82,16 +82,16 @@ exports.create_book = async (req, res) => {
     });
 };
 
-// // Update book
-// exports.update_book = async (req, res) => {
-//     await Book.findByIdAndUpdate(req.params.id, req.body, {useFindAndModify: false})
-//         .then(book => {
-//             res.status(200).json({success: true,message: "Book has been updated", book});
-//         })
-//         .catch(err => {
-//             res.status(500).json({success: false, message: err.message});
-//         });
-// };
+// Update book
+exports.update_book = async (req, res) => {
+    await Book.findByIdAndUpdate(req.params.id, req.body, {useFindAndModify: false})
+        .then(book => {
+            res.status(200).json({success: true,message: "Book has been updated", book});
+        })
+        .catch(err => {
+            res.status(500).json({success: false, message: err.message});
+        });
+};
 
 // // Delete book
 // exports.delete_book = async (req, res) => {
