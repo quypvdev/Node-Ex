@@ -21,6 +21,6 @@ router.post('/admin/newbook', create_book);
 router.put('/admin/book/:id', update_book);
 
 // Delete book
-// router.delete('/admin/book/delete/:id', delete_book);
+router.delete('/admin/book/delete/:id', delete_book);
 
 module.exports = router;
