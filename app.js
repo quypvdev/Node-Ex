@@ -11,7 +11,7 @@ require('dotenv').config();
 const authRoutes = require('./src/routes/auth');
 const userRoutes = require('./src/routes/user');
 // const categoryRoutes = require('./routes/category');
-// const productRoutes = require('./routes/product');
+const bookRoutes = require('./src/routes/book');
 // const braintreeRoutes = require('./routes/braintree');
 // const orderRoutes = require('./routes/order');
 
@@ -56,7 +56,7 @@ app.use(cors());
 app.use('/api', authRoutes);
 app.use('/api', userRoutes);
 // app.use('/api', categoryRoutes);
-// app.use('/api', productRoutes);
+app.use('/api', bookRoutes);
 // app.use('/api', braintreeRoutes);
 // app.use('/api', orderRoutes);
 
