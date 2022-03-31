@@ -11,37 +11,6 @@ exports.get_books = async (req, res) => {
          res.status(500).json({ success: false, message: err.message });
       });
 };
-
-exports.get_books_extended = async (req, res) => {
-   try {
-      const books = await Book.find();
-      let result = [];
-      for (const book of books) {
-         const author = await Author.findById(book["author"]);
-         const returned =
-            (await History.find({ book: book._id, returned: false })).length >
-            0;
-         result.push({
-            _id: book._id,
-            title: book.title,
-            author,
-            isbn: book.isbn,
-            pageCount: book.pageCount,
-            writtenIn: book.writtenIn,
-            createdAt: book.createdAt,
-            returned: !returned,
-         });
-      }
-      res.status(200).json({
-         success: true,
-         count: books.length,
-         books: result,
-      });
-   } catch (err) {
-      res.status(500).json({ success: false, message: err.message });
-   }
-};
-
 // Get book by id
 exports.get_book = async (req, res) => {
    await Book.findOne({ _id: req.params.id })
@@ -52,26 +21,6 @@ exports.get_book = async (req, res) => {
          res.status(500).json({ success: false, message: err.message });
       });
 };
-
-// Get book by id
-// exports.get_book_extended = async (req, res) => {
-//     const book = await Book.findOne({_id: req.params.id});
-//     // const history = await History.find({book: book._id});
-//     try {
-//         res.status(200).json({
-//             success: true,
-//             book: {
-//                 title: book.title,
-//                 author,
-//                 description: book.description,
-//                 createdAt: book.createdAt
-//             }
-//         });
-//     } catch (err) {
-//         res.status(500).json({success: false, message: err.message});
-//     }
-// };
-
 // Create book
 exports.create_book = async (req, res) => {
    await Book.create(
@@ -107,7 +56,7 @@ exports.update_book = async (req, res) => {
       });
 };
 
-// // Delete book
+// Delete book
 exports.delete_book = async (req, res) => {
    await Book.findByIdAndDelete(req.params.id)
       .then((book) => {
@@ -120,6 +69,8 @@ exports.delete_book = async (req, res) => {
          res.status(500).json({ success: false, message: err.message });
       });
 };
+// Borrow book
+
 exports.borrow_book = async (req, res) => {
    await Book.findByIdAndUpdate(req.params.id, {
       status: "BORROWED",
@@ -134,6 +85,8 @@ exports.borrow_book = async (req, res) => {
          res.status(500).json({ success: false, message: err.message });
       });
 };
+// Returned book
+
 exports.available_book = async (req, res) => {
    await Book.findByIdAndUpdate(req.params.id, {
       status: "AVAILABLE",
