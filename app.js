@@ -14,9 +14,6 @@ const authRoutes = require("./src/routes/auth");
 const userRoutes = require("./src/routes/user");
 const historyRoutes = require("./src/routes/history");
 const bookRoutes = require("./src/routes/book");
-// const braintreeRoutes = require('./routes/braintree');
-// const orderRoutes = require('./routes/order');
-// const Schema = mongoose.Schema;
 
 // app
 const app = express();
@@ -142,16 +139,7 @@ app.use(cors());
 // routes middleware
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
-app.use("/api", historyRoutes);
 app.use("/api", bookRoutes);
-// app.use('/api', braintreeRoutes);
-// app.use('/api', orderRoutes);
-
-// const port = process.env.PORT || 8000;
-
-// app.listen(port, () => {
-//     console.log(`Server is running on port ${port}`);
-// });
 
 // Production
 var server = app.listen(process.env.PORT || 3000, function () {
