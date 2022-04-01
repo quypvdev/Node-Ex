@@ -12,7 +12,6 @@ const uuidv1 = require("uuidv1");
 // import routes
 const authRoutes = require("./src/routes/auth");
 const userRoutes = require("./src/routes/user");
-const historyRoutes = require("./src/routes/history");
 const bookRoutes = require("./src/routes/book");
 
 // app
@@ -63,25 +62,15 @@ const userSchema = new mongoose.Schema(
          type: String,
          required: true,
       },
-      about: {
-         type: String,
-         trim: true,
-      },
       salt: String,
       role: {
-         type: Number,
-         default: 0,
-      },
-      history: {
-         type: Array,
-         default: [],
-      },
-      phonenumber: {
-         type: Number,
+         type: String,
+         default: "member",
       },
    },
    { timestamps: true }
 );
+
 //virtual field
 userSchema
    .virtual("password")
@@ -122,10 +111,10 @@ collections
       role: process.env.Set_role,
    })
    .then((ans) => {
-      console.log(ans);
+      console.log("Admin has been added");
    })
    .catch((err) => {
-      console.log("Admin has been added");
+      console.log("Admin already existed");
    });
 // middlewares
 app.use(morgan("dev"));

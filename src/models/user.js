@@ -20,9 +20,10 @@ const userSchema = new mongoose.Schema(
          type: String,
          required: true,
       },
+      salt: String,
       role: {
-         type: Number,
-         default: 0,
+         type: String,
+         default: "member",
       },
    },
    { timestamps: true }
