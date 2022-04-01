@@ -84,13 +84,39 @@ exports.isAuth = (req, res, next) => {
    }
    next();
 };
-
+exports.isUser = (req, res, next) => {
+   try {
+      let isUser = req.session.user._id == req.params.userId;
+      if (!isUser) {
+         return res.status(403).json({
+            message: "unauthorize",
+         });
+      }
+      return next();
+   } catch (error) {
+      return next(error);
+   }
+};
+exports.islibRole = async (req, res, next) => {
+   try {
+      let isLib = req.user.role == "librarian";
+      console.log(isLib, "role");
+      if (isLib) {
+         return res.status(403).json({
+            message: "The user is already a librarian",
+         });
+      }
+      return next();
+   } catch (error) {
+      return next(error);
+   }
+};
 exports.isAdmin = (req, res, next) => {
    try {
       const isUserRole = req.session.user.role;
       // console.log('isUserRole', isUserRole)
 
-      if (isUserRole !== 1) {
+      if (isUserRole !== "librarian") {
          return res.status(403).json({
             message: "unauthorize_admin",
          });
