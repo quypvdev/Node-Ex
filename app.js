@@ -30,9 +30,7 @@ app.use(
 // db
 mongoose
    .connect(
-      `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@crudapp.s69oc.mongodb.net/Rentbook?retryWrites=true&w=majority
-
-`,
+      `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@crudapp.s69oc.mongodb.net/Rentbook?retryWrites=true&w=majority`,
       {
          useNewUrlParser: true,
          // useCreateIndex: true,
