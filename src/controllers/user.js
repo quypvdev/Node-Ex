@@ -1,6 +1,6 @@
 const User = require("../models/user");
-// const { Order } = require('../models/order');
 const { errorHandler } = require("../helpers/dbErrorHandler");
+const user = require("../models/user");
 
 exports.userById = (req, res, next, id) => {
    User.findById(id).exec((err, user) => {
@@ -108,6 +108,65 @@ exports.updaterole = (req, res) => {
       });
    });
 };
+exports.setlibRole = async (req, res) => {
+   const role = "librarian";
+   User.findOne({ _id: req.profile._id }, (err, user) => {
+      if (err || !user) {
+         return res.status(400).json({
+            error: "User not found",
+         });
+      }
+
+      if (role === user.role) {
+         return res.status(400).json({
+            error: "The user is already a librarian",
+         });
+      } else {
+         user.role = role;
+      }
+
+      user.save((err, updatedUser) => {
+         if (err) {
+            console.log("USER UPDATE ERROR", err);
+            return res.status(400).json({
+               error: "User update failed",
+            });
+         }
+         updatedUser.hashed_password = undefined;
+         res.json(updatedUser);
+      });
+   });
+};
+exports.setmemberRole = async (req, res) => {
+   const role = "member";
+   User.findOne({ _id: req.profile._id }, (err, user) => {
+      if (err || !user) {
+         return res.status(400).json({
+            error: "User not found",
+         });
+      }
+
+      if (role === user.role) {
+         return res.status(400).json({
+            error: "The user is already a member",
+         });
+      } else {
+         user.role = role;
+      }
+
+      user.save((err, updatedUser) => {
+         if (err) {
+            console.log("USER ROLE UPDATE ERROR", err);
+            return res.status(400).json({
+               error: "User role update failed",
+            });
+         }
+         updatedUser.hashed_password = undefined;
+         res.json(updatedUser);
+      });
+   });
+};
+
 exports.listUsers = (req, res) => {
    User.find().exec((err, data) => {
       if (err) {

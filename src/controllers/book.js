@@ -72,33 +72,86 @@ exports.delete_book = async (req, res) => {
 // Borrow book
 
 exports.borrow_book = async (req, res) => {
-   await Book.findByIdAndUpdate(req.params.id, {
-      status: "BORROWED",
-   })
-      .then((book) => {
-         res.status(200).json({
-            success: true,
-            message: "Status book has been change BORROWED",
+   //    await Book.findByIdAndUpdate(req.params.id, {
+   //       status: "BORROWED",
+   //    })
+   //       .then((book) => {
+   //          res.status(200).json({
+   //             success: true,
+   //             message: "Status book has been change BORROWED",
+   //          });
+   //       })
+   //       .catch((err) => {
+   //          res.status(500).json({ success: false, message: err.message });
+   //       });
+   // };
+   const status = "BORROWED";
+   Book.findOne({ _id: req.params.id }, (err, book) => {
+      if (err || !book) {
+         return res.status(400).json({
+            error: "Book not found",
          });
-      })
-      .catch((err) => {
-         res.status(500).json({ success: false, message: err.message });
+      }
+
+      if (status === book.status) {
+         return res.status(400).json({
+            error: "The book is already BORROWED",
+         });
+      } else {
+         book.status = status;
+      }
+
+      book.save((err, updatedBook) => {
+         if (err) {
+            console.log("BOOK UPDATE ERROR", err);
+            return res.status(400).json({
+               error: "Book update failed",
+            });
+         }
+         res.json(updatedBook);
       });
+   });
 };
 // Returned book
 
-exports.available_book = async (req, res) => {
-   await Book.findByIdAndUpdate(req.params.id, {
-      status: "AVAILABLE",
-   })
+exports.return_book = async (req, res) => {
+   // await Book.findByIdAndUpdate(req.params.id, {
+   //    status: "RETURNED",
+   // })
 
-      .then((book) => {
-         res.status(200).json({
-            success: true,
-            message: "Status book has been change AVAILABLE",
+   //    .then((book) => {
+   //       res.status(200).json({
+   //          success: true,
+   //          message: "Status book has been change RETURNED",
+   //       });
+   //    })
+   //    .catch((err) => {
+   //       res.status(500).json({ success: false, message: err.message });
+   //    });
+   const status = "RETURNED";
+   Book.findOne({ _id: req.params.id }, (err, book) => {
+      if (err || !book) {
+         return res.status(400).json({
+            error: "Book not found",
          });
-      })
-      .catch((err) => {
-         res.status(500).json({ success: false, message: err.message });
+      }
+
+      if (status === book.status) {
+         return res.status(400).json({
+            error: "The book is already RETURNED",
+         });
+      } else {
+         book.status = status;
+      }
+
+      book.save((err, updatedBook) => {
+         if (err) {
+            console.log("BOOK UPDATE ERROR", err);
+            return res.status(400).json({
+               error: "Book update failed",
+            });
+         }
+         res.json(updatedBook);
       });
+   });
 };
