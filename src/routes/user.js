@@ -19,7 +19,7 @@ const {
 } = require("../controllers/user");
 
 router.get("/user/:userId", requireSignin, isAuth, read);
-router.get("/admin/user/listuser", isAdmin, listUsers);
+router.get("/admin/user/listuser", requireSignin, isAdmin, listUsers);
 router.delete("/delete/:userId", requireSignin, remove);
 router.delete("/delete/myown/:userId", requireSignin, isUser, remove);
 router.put("/user/:userId", requireSignin, isAuth, update);
