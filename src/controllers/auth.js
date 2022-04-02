@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const expressJwt = require("express-jwt");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 const { body } = require("express-validator/check");
+const { token } = require("morgan");
 
 exports.signup = (req, res) => {
    // console.log("req.body", req.body);
@@ -45,9 +46,11 @@ exports.signin = (req, res) => {
       delete newUser.hashed_password;
       req.session.user = newUser;
 
-      // console.log('cc',req.session.user);
+      // console.log("cc", newUser);
       //generate a signed token with user id and secret
       const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+      console.log(token, "dddd");
+
       // persist the token as 't' in coolie with expiry date
       res.cookie("t", token, { expire: new Date() + 9999 });
       // return response with user and token t frontend client
@@ -63,18 +66,30 @@ exports.signout = (req, res) => {
    });
 };
 
-(exports.requireSignin = expressJwt({
-   secret: process.env.JWT_SECRET,
-   algorithms: ["HS256"],
-   userProperty: "auth",
-})),
-   function (req, res) {
-      if (!req.isAuth)
-         return res.sendStatus(401).json({
-            error: "Token invalid",
-         });
-      res.sendStatus(200);
-   };
+// exports.requireSignin = expressJwt(
+//    {
+//       secret: process.env.JWT_SECRET,
+//       algorithms: ["HS256"],
+//       userProperty: "auth",
+//    },
+//    { message: "User is not logged in." }
+// );
+
+exports.requireSignin = (req, res, next) => {
+   const tokenSignin = req.header("Authorization");
+   if (!tokenSignin) {
+      return res.status(403).json({
+         error: "You are not allowed to do that. Please login...",
+      });
+   }
+   // console.log(tokenSignin, "aaa");
+   const token = req.cookies.t;
+   // console.log(atoken, "adad");
+   if (tokenSignin !== token)
+      return res.status(403).json({ error: "Invalid token." });
+
+   next();
+};
 exports.isAuth = (req, res, next) => {
    let user = req.profile && req.auth && req.profile._id == req.auth._id;
    if (!user) {
@@ -114,7 +129,7 @@ exports.islibRole = async (req, res, next) => {
 exports.isAdmin = (req, res, next) => {
    try {
       const isUserRole = req.session.user.role;
-      // console.log('isUserRole', isUserRole)
+      console.log("isUserRole", isUserRole);
 
       if (isUserRole !== "librarian") {
          return res.status(403).json({
