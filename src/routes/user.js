@@ -19,12 +19,17 @@ const {
 } = require("../controllers/user");
 
 router.get("/user/:userId", requireSignin, isAuth, read);
-router.get("/admin/user/listuser", requireSignin, isAdmin, listUsers);
-router.delete("/delete/:userId", requireSignin, remove);
+router.get("/librarian/user/listuser", requireSignin, isAdmin, listUsers);
+router.delete("/librarian/delete/:userId", requireSignin, remove);
 router.delete("/delete/myown/:userId", requireSignin, isUser, remove);
 router.put("/user/:userId", requireSignin, isAuth, update);
-router.put("/role/lib/:userId", requireSignin, isAdmin, setlibRole);
-router.put("/role/member/:userId", requireSignin, isAdmin, setmemberRole);
+router.put("/librarian/role/lib/:userId", requireSignin, isAdmin, setlibRole);
+router.put(
+   "/librarian/role/member/:userId",
+   requireSignin,
+   isAdmin,
+   setmemberRole
+);
 router.param("userId", userById);
 
 module.exports = router;
