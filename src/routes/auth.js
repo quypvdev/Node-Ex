@@ -14,7 +14,13 @@ const {
    userSigninValidator,
 } = require("../validator/index");
 
-router.post("/signup", requireSignin, isAdmin, userSignupValidator, signup);
+router.post(
+   "/librarian/addmember",
+   requireSignin,
+   isAdmin,
+   userSignupValidator,
+   signup
+);
 router.post("/signin", userSigninValidator, signin);
 router.get("/signout", signout);
 

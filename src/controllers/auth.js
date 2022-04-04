@@ -49,7 +49,7 @@ exports.signin = (req, res) => {
       // console.log("cc", newUser);
       //generate a signed token with user id and secret
       const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
-      console.log(token, "dddd");
+      // console.log(token, "dddd");
 
       // persist the token as 't' in coolie with expiry date
       res.cookie("t", token, { expire: new Date() + 9999 });
