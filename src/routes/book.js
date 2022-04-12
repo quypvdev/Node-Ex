@@ -20,6 +20,6 @@ router.put("/book/update/:id", requireSignin, isAdmin, update_book);
 router.patch("/book/borrow/:id", requireSignin, borrow_book);
 router.patch("/book/return/:id", requireSignin, return_book);
 // Delete book
-router.delete("/book/delete/:id", requireSignin, delete_book);
+router.delete("/book/delete/:id", requireSignin, isAdmin, delete_book);
 
 module.exports = router;

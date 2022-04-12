@@ -2,8 +2,6 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const expressJwt = require("express-jwt");
 const { errorHandler } = require("../helpers/dbErrorHandler");
-const { body } = require("express-validator/check");
-const { token } = require("morgan");
 
 exports.signup = (req, res) => {
    // console.log("req.body", req.body);
@@ -11,7 +9,8 @@ exports.signup = (req, res) => {
    user.save((err, user) => {
       if (err) {
          return res.status(400).json({
-            err: errorHandler(err),
+            // err: errorHandler(err),
+            err: "Email is already exists",
          });
       }
       user.salt = undefined;
@@ -21,7 +20,22 @@ exports.signup = (req, res) => {
       });
    });
 };
-
+// exports.create_user = async (req, res) => {
+//    await User.create(
+//       {
+//          name: req.body.name,
+//          email: req.body.email,
+//          password: req.body.password,
+//       },
+//       (err, user) => {
+//          if (err)
+//             return res
+//                .status(500)
+//                .json({ success: false, message: err.message });
+//          res.status(200).json({ success: true, user });
+//       }
+//    );
+// };
 exports.signin = (req, res) => {
    // find the user based on email
    const { email, password } = req.body;
@@ -115,7 +129,7 @@ exports.isUser = (req, res, next) => {
 exports.islibRole = async (req, res, next) => {
    try {
       let isLib = req.user.role == "librarian";
-      console.log(isLib, "role");
+      // console.log(isLib, "role");
       if (isLib) {
          return res.status(403).json({
             message: "The user is already a librarian",
@@ -129,7 +143,7 @@ exports.islibRole = async (req, res, next) => {
 exports.isAdmin = (req, res, next) => {
    try {
       const isUserRole = req.session.user.role;
-      console.log("isUserRole", isUserRole);
+      // console.log("isUserRole", isUserRole);
 
       if (isUserRole !== "librarian") {
          return res.status(403).json({

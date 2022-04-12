@@ -22,7 +22,7 @@ router.get("/user/:userId", requireSignin, isAuth, read);
 router.get("/librarian/user/listuser", requireSignin, isAdmin, listUsers);
 router.delete("/librarian/delete/:userId", requireSignin, remove);
 router.delete("/delete/myown/:userId", requireSignin, isUser, remove);
-router.put("/user/:userId", requireSignin, isAuth, update);
+router.put("/user/:userId", requireSignin, update);
 router.put("/librarian/role/lib/:userId", requireSignin, isAdmin, setlibRole);
 router.put(
    "/librarian/role/member/:userId",

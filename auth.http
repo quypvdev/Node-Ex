@@ -1,0 +1,11 @@
+
+POST  http://localhost:8000/api/signin
+Content-Type: application/json
+
+{
+    "email": "librarian@gmail.com",
+    "password": "vanquy1306"
+
+}
+
+###

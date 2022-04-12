@@ -128,7 +128,7 @@ exports.return_book = async (req, res) => {
    //    .catch((err) => {
    //       res.status(500).json({ success: false, message: err.message });
    //    });
-   const status = "RETURNED";
+   const status = "AVAILABLE";
    Book.findOne({ _id: req.params.id }, (err, book) => {
       if (err || !book) {
          return res.status(400).json({
